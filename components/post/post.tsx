@@ -1,4 +1,5 @@
 import Link from "next/link";
+import styles from "./Post.module.css";
 
 interface PostData {
   id: number;
@@ -12,14 +13,14 @@ interface PostData {
 export default function Post(params: any) {
   const data: PostData = params.data;
   return (
-    <div>
-      <Link href={`questions/${data.id}`}>
+    <Link href={`questions/${data.id}`}>
+      <div className={styles.cardPost}>
         <h1>{data.title}</h1>
         <h2>{data.author}</h2>
         <p>{data.content}</p>
         <h2>Upvotes: {data.upvote - data.downvote}</h2>
         <br />
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }

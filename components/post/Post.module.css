@@ -1,0 +1,9 @@
+.cardPost {
+    background-color: #1b2021;
+    color: white;
+    border: 2px solid white;
+    border-radius: 6px;
+    padding: 2rem;
+    font-size: 0.8rem;
+    margin-top: 2rem;
+}
