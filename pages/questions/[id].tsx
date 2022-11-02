@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Head from "next/head";
 import { remark } from "remark";
 import html from "remark-html";
@@ -55,6 +56,7 @@ export default function Question({ questionData, contentHtml }) {
       </Head>
       <h1>{questionData.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+      <Link href="/">Come home white man(this is clickable)</Link>
     </>
   );
 }
