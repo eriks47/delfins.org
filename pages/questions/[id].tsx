@@ -34,7 +34,10 @@ export async function getStaticProps({ params }) {
 // of the path. Since the name of the path is it's `id` we
 // fetch all the id's from the `feed` table
 export async function getStaticPaths() {
-  const { data, error, status } = await supabase.from("feed").select("id");
+  const { data, error, status } = await supabase
+    .from("feed")
+    .select("id")
+    .order("id", { ascending: true });
   const paths = data.map((item) => {
     return {
       params: {
@@ -42,6 +45,9 @@ export async function getStaticPaths() {
       },
     };
   });
+  const max = paths[paths.length - 1].params.id.toNumber();
+  for (let i = 0; i < 1000; ++i)
+    paths.push({ params: { id: (max + i).toString } });
   return {
     paths,
     fallback: false,
