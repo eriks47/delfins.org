@@ -4,6 +4,7 @@ export default function Login() {
   const signInWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: { redirectTo: "https://delfins.org" },
     });
   };
   return (
