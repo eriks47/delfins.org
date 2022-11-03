@@ -45,9 +45,10 @@ export async function getStaticPaths() {
       },
     };
   });
-  const max = paths[paths.length - 1].params.id.toNumber();
+  const max = paths[paths.length - 1];
+  const maxNum: number = max.params.id.toNumber();
   for (let i = 0; i < 1000; ++i)
-    paths.push({ params: { id: (max + i).toString } });
+    paths.push({ params: { id: (maxNum + i).toString } });
   return {
     paths,
     fallback: false,
