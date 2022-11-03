@@ -13,14 +13,17 @@ interface PostData {
 export default function Post(params: any) {
   const data: PostData = params.data;
   return (
-    <Link href={`questions/${data.id}`}>
-      <div className={styles.cardPost}>
-        <h1>{data.title}</h1>
-        <h2>{data.author}</h2>
-        <p>{data.content}</p>
-        <h2>Upvotes: {data.upvote - data.downvote}</h2>
-        <br />
+    <div className={styles.cardPost}>
+      <div className={styles.numberPanel}>
+        <p className={styles.textSmall}>{data.upvote - data.downvote} balsis</p>
       </div>
-    </Link>
+      <div>
+        <p className={`${styles.fontMedium} ${styles.colorAccent}`}>
+          <Link href={`questions/${data.id}`}>{data.title}</Link>
+        </p>
+        <p>{data.author}</p>
+        <p>{data.content.slice(0, 100) + "..."}</p>
+      </div>
+    </div>
   );
 }
