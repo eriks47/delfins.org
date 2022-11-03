@@ -1,6 +1,6 @@
-# Vaver[a]s
+# Delfins.org
 
-[https://vaveras.vercel.app/](https://vaveras.vercel.app/)
+[delfins.org](delfins.org)
 
 To run the project locally do the follwing
 ```bash
