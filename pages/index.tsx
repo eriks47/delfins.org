@@ -8,11 +8,15 @@ import useSWR from "swr";
 import Post from "../components/post/post";
 import { DolphinContext } from "../context/DolphinContext";
 import { supabase } from "../services/supabaseClient";
+import { useRouter } from "next/router";
+
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-
   const { currentUser } = useContext(DolphinContext);
+  const router = useRouter();
 
   // @ts-ignore
   const fetcher = (...args: any) => fetch(...args).then((res) => res.json());
@@ -30,6 +34,15 @@ export default function Home() {
         <meta name="description" content="Sveika pasaule" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className={styles.header}>
+        <h1>Question feed</h1>
+        <Button
+          onClick={() => router.push("/new-question")}
+          variant="contained"
+        >
+          Uzdot jautājumu
+        </Button>
+      </div>
       {currentUser ? (
         <>
           <p>Hello {currentUser.user_metadata.full_name}</p>
@@ -39,10 +52,12 @@ export default function Home() {
         <Link href="/login">please login</Link>
       )}
 
-      {posts.map((post, index) => (
-        // @ts-ignore
-        <Post key={index} data={post} />
-      ))}
+      <Stack direction="column" spacing={3}>
+        {posts.map((post, index) => (
+          // @ts-ignore
+          <Post key={index} data={post} />
+        ))}
+      </Stack>
     </div>
   );
 }
