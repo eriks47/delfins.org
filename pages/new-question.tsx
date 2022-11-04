@@ -43,6 +43,7 @@ export default function NewQuestion() {
           padding: "20px",
           flexDirection: "column",
           width: "60%",
+          minWidth: "300px",
         }}
       >
         <TextField
