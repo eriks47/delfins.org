@@ -18,6 +18,11 @@ export default function Home() {
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
 
+  function signOut() {
+    supabase.auth.signOut();
+    router.push("/");
+  }
+
   // @ts-ignore
   const fetcher = (...args: any) => fetch(...args).then((res) => res.json());
   const { data, error } = useSWR("api/get-posts", fetcher, {
@@ -46,7 +51,7 @@ export default function Home() {
       {currentUser ? (
         <>
           <p>Hello {currentUser.user_metadata.full_name}</p>
-          <button onClick={() => supabase.auth.signOut()}>logout</button>
+          <button onClick={signOut}>logout</button>
         </>
       ) : (
         <Link href="/login">please login</Link>

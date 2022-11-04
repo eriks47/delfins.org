@@ -4,10 +4,14 @@ import { remark } from "remark";
 import html from "remark-html";
 import { supabase } from "../../services/supabaseClient";
 import sanitizeHtml from "sanitize-html";
+import NewQuestionForm from "../../components/common/new-question-form";
+
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 // Use get server side props because we need to run this dynamically
 export async function getServerSideProps({ params }) {
-  const { data, error, status } = await supabase
+  let { data, error, status } = await supabase
     .from("feed")
     .select("*")
     .eq("id", Number(params.id));
@@ -19,24 +23,52 @@ export async function getServerSideProps({ params }) {
   const processedContent = await remark()
     .use(html)
     .process(questionData.content);
-  const contentHtml = sanitizeHtml(processedContent.toString());
+  const questionHtml = sanitizeHtml(processedContent.toString());
+
+  const answerData = await supabase
+    .from("answers")
+    .select("*")
+    .eq("questionId", Number(params.id));
+  console.log(answerData);
+  const answerPromises = answerData.data.map(async (answer) => {
+    const processedContent = await remark().use(html).process(answer.content);
+    const contentHtml = sanitizeHtml(processedContent.toString());
+    return contentHtml;
+  });
+  const answerHtml = await Promise.all(answerPromises);
   return {
     props: {
       questionData,
-      contentHtml,
+      questionHtml,
+      answerData: answerData.data,
+      answerHtml,
     },
   };
 }
 
-export default function Question({ questionData, contentHtml }) {
+export default function Question({
+  questionData,
+  questionHtml,
+  answerData,
+  answerHtml,
+}) {
   return (
     <>
       <Head>
         <title>{questionData.title}</title>
       </Head>
       <h1>{questionData.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-      <Link href="/">Come home white man(this is clickable)</Link>
+      <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
+      <h1>Atbildes</h1>
+      <Stack direction="column" spacing={3}>
+        {answerHtml.map((html: string, index: number) => (
+          <>
+            <div dangerouslySetInnerHTML={{ __html: html }} />
+            <p>{answerData[index].author}</p>
+          </>
+        ))}
+        <NewQuestionForm isQuestion={false} questionId={questionData.id} />
+      </Stack>
     </>
   );
 }

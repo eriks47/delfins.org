@@ -6,6 +6,7 @@ import { useState, useContext } from "react";
 import { supabase } from "../services/supabaseClient";
 import { DolphinContext } from "../context/DolphinContext";
 import { useRouter } from "next/router";
+import NewQuestionForm from "../components/common/new-question-form";
 
 export default function NewQuestion() {
   const [title, setTitle] = useState("");
@@ -37,45 +38,7 @@ export default function NewQuestion() {
         minHeight: "100vh",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          padding: "20px",
-          flexDirection: "column",
-          width: "60%",
-          minWidth: "300px",
-        }}
-      >
-        <TextField
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          id="outlined-basic"
-          label="Virsraksts"
-          variant="outlined"
-        />
-        <TextField
-          style={{ marginTop: "10px" }}
-          id="outlined-multiline-static"
-          label="Jautājuma apraksts"
-          multiline
-          rows={4}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <Button
-          style={{ marginTop: "10px", width: "100px" }}
-          variant="contained"
-          onClick={handleSubmit}
-          type="submit"
-        >
-          Iesniegt
-        </Button>
-        {error && (
-          <Alert style={{ marginTop: "10px" }} severity="error">
-            {error}
-          </Alert>
-        )}
-      </div>
+      <NewQuestionForm isQuestion={true} questionId={null} />
     </div>
   );
 }

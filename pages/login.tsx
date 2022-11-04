@@ -1,4 +1,6 @@
 import { supabase } from "../services/supabaseClient";
+import GoogleIcon from "@mui/icons-material/Google";
+import Button from "@mui/material/Button";
 
 export default function Login() {
   const signInWithGoogle = async () => {
@@ -16,7 +18,14 @@ export default function Login() {
         minHeight: "100vh",
       }}
     >
-      <button onClick={signInWithGoogle}>Sign in with google</button>
+      <Button
+        variant="contained"
+        startIcon={<GoogleIcon />}
+        onClick={signInWithGoogle}
+        size="large"
+      >
+        Pierakstītes ar Google
+      </Button>
     </div>
   );
 }
