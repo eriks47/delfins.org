@@ -20,7 +20,7 @@ export default function NewQuestionForm(props: any) {
     let result: any;
     if (props.isQuestion) {
       result = await supabase
-        .from("feed")
+        .from("questions")
         .insert({
           title,
           content,

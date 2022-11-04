@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 // Use get server side props because we need to run this dynamically
 export async function getServerSideProps({ params }) {
   let { data, error, status } = await supabase
-    .from("feed")
+    .from("questions")
     .select("*")
     .eq("id", Number(params.id));
   const questionData = data[0];

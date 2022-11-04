@@ -15,20 +15,6 @@ export default function NewQuestion() {
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
 
-  async function handleSubmit() {
-    if (!currentUser) router.push("/login");
-    const result = await supabase
-      .from("feed")
-      .insert({
-        title,
-        content,
-        author: currentUser.user_metadata.full_name,
-      })
-      .select();
-    if (result.error) setError(result.error.message);
-    else router.push("/");
-  }
-
   return (
     <div
       style={{
