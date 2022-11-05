@@ -89,8 +89,10 @@ export default function Question({
               downvote={answerData[index].downvote}
               isQuestion={false}
             />
-            <div dangerouslySetInnerHTML={{ __html: html }} />
-            <p>{answerData[index].author}</p>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div dangerouslySetInnerHTML={{ __html: html }} />
+              <p>{answerData[index].author}</p>
+            </div>
           </div>
         ))}
         <NewQuestionForm isQuestion={false} questionId={questionData.id} />
