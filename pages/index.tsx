@@ -7,6 +7,7 @@ import styles from "../styles/Home.module.css";
 import useSWR from "swr";
 import Post from "../components/post/post";
 import { DolphinContext } from "../context/DolphinContext";
+import { PostsContext } from "../context/PostsContext";
 import { supabase } from "../services/supabaseClient";
 import { useRouter } from "next/router";
 import NavBar from "../components/nav/nav";
@@ -16,9 +17,10 @@ import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const { currentUser } = useContext(DolphinContext);
+  const [posts, setPosts, preserve, setPreserve] =
+    useContext(PostsContext).value;
   const router = useRouter();
 
   function signOut() {
@@ -33,6 +35,10 @@ export default function Home() {
   });
   useEffect(() => {
     if (!data) return;
+    if (preserve) {
+      setPreserve(false);
+      return;
+    }
     setPosts(data.data);
   }, [data]);
   return (

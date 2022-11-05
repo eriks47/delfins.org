@@ -3,11 +3,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import Input from "@mui/material/Input";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 import { supabase } from "../../services/supabaseClient";
 
 export default function Nav({ changePosts }) {
   const [searchValue, setSearchValue] = useState("");
+  const router = useRouter();
 
   async function fullTextSearch(query: string) {
     const { data, error } = await supabase
@@ -57,4 +59,3 @@ export default function Nav({ changePosts }) {
     </ul>
   );
 }
-
