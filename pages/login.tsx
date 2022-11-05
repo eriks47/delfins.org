@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import { PostsContext } from "../context/PostsContext";
 import NavBar from "../components/nav/nav";
+import Head from "next/head";
 
 export default function Login() {
   const signInWithGoogle = async () => {
@@ -18,6 +19,9 @@ export default function Login() {
   const router = useRouter();
   return (
     <>
+      <Head>
+        <title>Pierakstītes - Delfīns</title>
+      </Head>
       <NavBar
         changePosts={(p) => {
           router.push("/");

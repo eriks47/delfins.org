@@ -3,6 +3,7 @@ import NavBar from "../components/nav/nav";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import NewQuestionForm from "../components/common/new-question-form";
+import Head from "next/head";
 
 export default function NewQuestion() {
   const router = useRouter();
@@ -11,6 +12,9 @@ export default function NewQuestion() {
 
   return (
     <>
+      <Head>
+        <title>Uzdot Jautājumu - Delfīns</title>
+      </Head>
       <NavBar
         changePosts={(p) => {
           router.push("/");

@@ -83,7 +83,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Vaver[a]s - Kur Skolēni Atbalsta, Mācās, Dalās</title>
+        <title>Delfīns - Vieta Kur Skolēni Atbalsta, Mācās, Dalās</title>
         <meta name="description" content="Sveika pasaule" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
