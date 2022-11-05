@@ -44,7 +44,7 @@ export default function Home() {
       return;
     }
     setPosts(data.data);
-  }, []);
+  }, [data]);
 
   const pageBody = (
     <div style={{ padding: "0 2rem" }}>
