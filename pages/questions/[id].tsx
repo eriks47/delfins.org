@@ -1,10 +1,14 @@
 import Link from "next/link";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { remark } from "remark";
 import html from "remark-html";
 import { supabase } from "../../services/supabaseClient";
 import sanitizeHtml from "sanitize-html";
 import NewQuestionForm from "../../components/common/new-question-form";
+import NavBar from "../../components/nav/nav";
+import { useContext } from "react";
+import { PostsContext } from "../../context/PostsContext";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -51,11 +55,22 @@ export default function Question({
   answerData,
   answerHtml,
 }) {
+  const [posts, setPosts, preserve, setPreserve] =
+    useContext(PostsContext).value;
+  const router = useRouter();
+
   return (
     <>
       <Head>
         <title>{questionData.title}</title>
       </Head>
+      <NavBar
+        changePosts={(p) => {
+          router.push("/");
+          setPosts(p);
+          setPreserve(true);
+        }}
+      />
       <h1>{questionData.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
       <h1>Atbildes</h1>
