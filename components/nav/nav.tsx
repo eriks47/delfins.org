@@ -2,6 +2,7 @@ import styles from "./Nav.module.css";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import Input from "@mui/material/Input";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -40,6 +41,12 @@ export default function Nav({ changePosts }) {
       </li>
       <li className={styles.li}>
         <a href="about.asp">About</a>
+      </li>
+      
+      <li className={styles.liRight}>
+        <a href="default.asp">
+          <AccountCircleIcon />
+        </a>
       </li>
       <li className={styles.in}>
         <Input
