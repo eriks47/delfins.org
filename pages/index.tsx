@@ -44,10 +44,10 @@ export default function Home() {
       return;
     }
     setPosts(data.data);
-  }, [data]);
+  }, []);
 
   const pageBody = (
-    <>
+    <div style={{ padding: "0 2rem" }}>
       <div className={styles.header}>
         <h1>Question feed</h1>
         <Button
@@ -58,10 +58,10 @@ export default function Home() {
         </Button>
       </div>
       {currentUser ? (
-        <>
+        <div style={{ margin: "0 1rem" }}>
           <p>Hello {currentUser.user_metadata.full_name}</p>
           <button onClick={signOut}>logout</button>
-        </>
+        </div>
       ) : (
         <Link href="/login">please login</Link>
       )}
@@ -91,7 +91,7 @@ export default function Home() {
           color="primary"
         />
       </div>
-    </>
+    </div>
   );
 
   return (
@@ -106,9 +106,7 @@ export default function Home() {
 
         {loadingQuestion ? (
           <>
-            <div style={{ width: "100%" }}>
-              <LinearProgress />
-            </div>
+            <LinearProgress />
             <Skeleton
               variant="text"
               sx={{ fontSize: "2em", margin: "22px 0" }}
