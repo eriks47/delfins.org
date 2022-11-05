@@ -1,16 +1,15 @@
 // Home Component - root component of the app
 
 import Head from "next/head";
-import Link from "next/link";
 import { useEffect, useState, useContext } from "react";
 import styles from "../styles/Home.module.css";
 import useSWR from "swr";
 import Post from "../components/post/post";
 import { DolphinContext } from "../context/DolphinContext";
 import { PostsContext } from "../context/PostsContext";
-import { supabase } from "../services/supabaseClient";
 import { useRouter } from "next/router";
 import NavBar from "../components/nav/nav";
+import AltNavBar from "../components/NavBar/NavBar";
 
 import LinearProgress from "@mui/material/LinearProgress";
 import Skeleton from "@mui/material/Skeleton";
@@ -25,11 +24,6 @@ export default function Home() {
   const [posts, setPosts, preserve, setPreserve] =
     useContext(PostsContext).value;
   const router = useRouter();
-
-  function signOut() {
-    supabase.auth.signOut();
-    router.push("/");
-  }
 
   // @ts-ignore
   const fetcher = (...args: any) => fetch(...args).then((res) => res.json());
@@ -57,14 +51,6 @@ export default function Home() {
           Uzdot jautājumu
         </Button>
       </div>
-      {currentUser ? (
-        <div style={{ margin: "0 1rem" }}>
-          <p>Hello {currentUser.user_metadata.full_name}</p>
-          <button onClick={signOut}>logout</button>
-        </div>
-      ) : (
-        <Link href="/login">please login</Link>
-      )}
 
       <Stack direction="column" spacing={3}>
         {posts.map((post, index) => {
@@ -102,6 +88,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <>
+        <AltNavBar />
         <NavBar changePosts={setPosts} />
 
         {loadingQuestion ? (
