@@ -1,30 +1,33 @@
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
-
-import { useState, useContext } from "react";
-import { supabase } from "../services/supabaseClient";
-import { DolphinContext } from "../context/DolphinContext";
+import { PostsContext } from "../context/PostsContext";
+import NavBar from "../components/nav/nav";
+import { useContext } from "react";
 import { useRouter } from "next/router";
 import NewQuestionForm from "../components/common/new-question-form";
 
 export default function NewQuestion() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [error, setError] = useState("");
-  const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
+  const [posts, setPosts, preserve, setPreserve] =
+    useContext(PostsContext).value;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <NewQuestionForm isQuestion={true} questionId={null} />
-    </div>
+    <>
+      <NavBar
+        changePosts={(p) => {
+          router.push("/");
+          setPosts(p);
+          setPreserve(true);
+        }}
+      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
+      >
+        <NewQuestionForm isQuestion={true} questionId={null} />
+      </div>
+    </>
   );
 }

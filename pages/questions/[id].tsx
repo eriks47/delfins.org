@@ -1,4 +1,4 @@
-import Link from "next/link";
+import VotePanel from "../../components/common/votePanel";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { remark } from "remark";
@@ -76,7 +76,19 @@ export default function Question({
       <h1>Atbildes</h1>
       <Stack direction="column" spacing={3}>
         {answerHtml.map((html: string, index: number) => (
-          <div key={index}>
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <VotePanel
+              id={answerData[index].id}
+              upvote={answerData[index].upvote}
+              downvote={answerData[index].downvote}
+              isQuestion={false}
+            />
             <div dangerouslySetInnerHTML={{ __html: html }} />
             <p>{answerData[index].author}</p>
           </div>

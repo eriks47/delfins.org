@@ -12,12 +12,15 @@ import { supabase } from "../services/supabaseClient";
 import { useRouter } from "next/router";
 import NavBar from "../components/nav/nav";
 
+import LinearProgress from "@mui/material/LinearProgress";
+import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 
 export default function Home() {
   const [page, setPage] = useState(1);
+  const [loadingQuestion, setLoadingQuestion] = useState(false);
   const { currentUser } = useContext(DolphinContext);
   const [posts, setPosts, preserve, setPreserve] =
     useContext(PostsContext).value;
@@ -33,6 +36,7 @@ export default function Home() {
   const { data, error } = useSWR("api/get-posts", fetcher, {
     refreshInterval: 200,
   });
+
   useEffect(() => {
     if (!data) return;
     if (preserve) {
@@ -41,14 +45,9 @@ export default function Home() {
     }
     setPosts(data.data);
   }, [data]);
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Vaver[a]s - Kur Skolēni Atbalsta, Mācās, Dalās</title>
-        <meta name="description" content="Sveika pasaule" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <NavBar changePosts={setPosts} />
+
+  const pageBody = (
+    <>
       <div className={styles.header}>
         <h1>Question feed</h1>
         <Button
@@ -71,7 +70,9 @@ export default function Home() {
         {posts.map((post, index) => {
           // @ts-ignore
           if (Math.floor(index / 5 + 1) == page)
-            return <Post key={index} data={post} />;
+            return (
+              <Post key={index} data={post} onClick={setLoadingQuestion} />
+            );
           return <div key={index} />;
         })}
       </Stack>
@@ -90,6 +91,35 @@ export default function Home() {
           color="primary"
         />
       </div>
+    </>
+  );
+
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>Vaver[a]s - Kur Skolēni Atbalsta, Mācās, Dalās</title>
+        <meta name="description" content="Sveika pasaule" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <>
+        <NavBar changePosts={setPosts} />
+
+        {loadingQuestion ? (
+          <>
+            <div style={{ width: "100%" }}>
+              <LinearProgress />
+            </div>
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "2em", margin: "22px 0" }}
+              width="500px"
+            />
+            <Skeleton variant="rounded" width={500} height={60} />
+          </>
+        ) : (
+          pageBody
+        )}
+      </>
     </div>
   );
 }

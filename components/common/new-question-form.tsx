@@ -10,12 +10,19 @@ import { useRouter } from "next/router";
 export default function NewQuestionForm(props: any) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [titleError, setTilteError] = useState("");
+  const [contentError, setConentError] = useState("");
   const [error, setError] = useState("");
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
 
   async function handleSubmit() {
     if (!currentUser) router.push("/login");
+
+    if (titleError || contentError) {
+      setError("Lūdzu aizpildat laukus pareizi");
+      return;
+    }
 
     let result: any;
     if (props.isQuestion) {
@@ -43,6 +50,26 @@ export default function NewQuestionForm(props: any) {
     else router.push(props.isQuestion ? "/" : `/questions/${props.questionId}`);
   }
 
+  function handleTitleChange(e) {
+    const textEntered = e.target.value;
+    setTitle(textEntered);
+    if (textEntered.length < 12) {
+      setTilteError("Virsrakstam jābūt vismaz 12 burtus garam");
+    } else {
+      setTilteError("");
+    }
+  }
+
+  function handleContentChange(e) {
+    const textEntered = e.target.value;
+    setContent(textEntered);
+    if (textEntered.length < 30) {
+      setConentError("Jautājuma aprakstam jabūt vismaz 30 burtu garam");
+    } else {
+      setConentError("");
+    }
+  }
+
   return (
     <div
       style={{
@@ -55,24 +82,28 @@ export default function NewQuestionForm(props: any) {
     >
       {props.isQuestion && (
         <TextField
+          error={!!titleError}
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleTitleChange}
           id="outlined-basic"
           label="Virsraksts"
           variant="outlined"
+          helperText={titleError || ""}
         />
       )}
       <TextField
-        style={{ marginTop: "10px" }}
+        error={!!contentError}
+        style={{ marginTop: "15px" }}
         id="outlined-multiline-static"
         label={props.isQuestion ? "Jautājuma apraksts" : "Atblides apraksts"}
         multiline
         rows={4}
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={handleContentChange}
+        helperText={contentError || ""}
       />
       <Button
-        style={{ marginTop: "10px", width: "100px" }}
+        style={{ marginTop: "15px", width: "100px" }}
         variant="contained"
         onClick={currentUser ? handleSubmit : () => router.push("/login")}
         type="submit"
