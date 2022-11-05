@@ -59,7 +59,7 @@ export default function Home() {
             return (
               <Post key={index} data={post} onClick={setLoadingQuestion} />
             );
-          return <div key={index} />;
+          return;
         })}
       </Stack>
       <div
