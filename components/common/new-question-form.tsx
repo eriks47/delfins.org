@@ -19,7 +19,7 @@ export default function NewQuestionForm(props: any) {
   async function handleSubmit() {
     if (!currentUser) router.push("/login");
 
-    if (titleError || contentError) {
+    if (titleError || contentError || !title || !content) {
       setError("Lūdzu aizpildat laukus pareizi");
       return;
     }
