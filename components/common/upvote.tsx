@@ -13,10 +13,7 @@ export default function Upvote({ isActive, isQuestion, id, onClick }: Props) {
     ? "Šis jautājums jautājums ir saprotams, precīzs un parāda personīgu ieguldījumu"
     : "Šī atbilde ir noderīga";
   return (
-    <Tooltip
-      title="Šis jautājums jautājums ir saprotams, precīzs un parāda personīgu ieguldījumu"
-      placement="right"
-    >
+    <Tooltip title={upvoteTooltip} placement="right">
       <ArrowDropUpIcon
         style={{
           cursor: "pointer",

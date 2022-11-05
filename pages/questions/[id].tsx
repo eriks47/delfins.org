@@ -73,25 +73,22 @@ export default function Question({
       />
       <h1>{questionData.title}</h1>
       <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <VotePanel
-              id={questionData.id}
-              upvote={questionData.upvote}
-              downvote={questionData.downvote}
-              isQuestion={true}
-            />
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
-              <p>{questionData.author}</p>
-            </div>
-          </div>
-      
-      <h1>{questionData.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <VotePanel
+          id={questionData.id}
+          upvote={questionData.upvote}
+          downvote={questionData.downvote}
+          isQuestion={true}
+        />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
+          <p>{questionData.author}</p>
+        </div>
+      </div>
       <h1>Atbildes</h1>
       <Stack direction="column" spacing={3}>
         {answerHtml.map((html: string, index: number) => (

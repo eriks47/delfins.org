@@ -9,11 +9,11 @@ interface Props {
 }
 
 export default function Downvote({ isActive, isQuestion, id, onClick }: Props) {
+  const upvoteTooltip = isQuestion
+    ? "Jautājums ir nesaprotams un nav noderīgs; Tas neparāda nekādu ieguldījumu"
+    : "Šī atbilde nav noderīga";
   return (
-    <Tooltip
-      title="Jautājums ir nesaprotams un nav noderīgs; Tas neparāda nekādu ieguldījumu"
-      placement="right"
-    >
+    <Tooltip title={upvoteTooltip} placement="right">
       <ArrowDropDownIcon
         style={{ cursor: "pointer", fontSize: "80px", marginTop: "-30px" }}
         fontSize="large"
