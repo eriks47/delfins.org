@@ -29,7 +29,6 @@ export async function getServerSideProps({ params }) {
     .from("answers")
     .select("*")
     .eq("questionId", Number(params.id));
-  console.log(answerData);
   const answerPromises = answerData.data.map(async (answer) => {
     const processedContent = await remark().use(html).process(answer.content);
     const contentHtml = sanitizeHtml(processedContent.toString());
@@ -62,10 +61,10 @@ export default function Question({
       <h1>Atbildes</h1>
       <Stack direction="column" spacing={3}>
         {answerHtml.map((html: string, index: number) => (
-          <>
+          <div key={index}>
             <div dangerouslySetInnerHTML={{ __html: html }} />
             <p>{answerData[index].author}</p>
-          </>
+          </div>
         ))}
         <NewQuestionForm isQuestion={false} questionId={questionData.id} />
       </Stack>

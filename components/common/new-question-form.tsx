@@ -74,7 +74,7 @@ export default function NewQuestionForm(props: any) {
       <Button
         style={{ marginTop: "10px", width: "100px" }}
         variant="contained"
-        onClick={handleSubmit}
+        onClick={currentUser ? handleSubmit : () => router.push("/login")}
         type="submit"
       >
         Iesniegt

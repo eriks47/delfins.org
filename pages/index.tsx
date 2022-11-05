@@ -12,9 +12,11 @@ import { useRouter } from "next/router";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Pagination from "@mui/material/Pagination";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(1);
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
 
@@ -58,11 +60,28 @@ export default function Home() {
       )}
 
       <Stack direction="column" spacing={3}>
-        {posts.map((post, index) => (
+        {posts.map((post, index) => {
           // @ts-ignore
-          <Post key={index} data={post} />
-        ))}
+          if (Math.floor(index / 5 + 1) == page)
+            return <Post key={index} data={post} />;
+          return <div key={index} />;
+        })}
       </Stack>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}
+      >
+        <Pagination
+          count={Math.floor(posts.length / 5) + 1}
+          onChange={(e, page) => setPage(page)}
+          color="primary"
+        />
+      </div>
     </div>
   );
 }
