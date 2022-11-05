@@ -9,6 +9,7 @@ import Post from "../components/post/post";
 import { DolphinContext } from "../context/DolphinContext";
 import { supabase } from "../services/supabaseClient";
 import { useRouter } from "next/router";
+import NavBar from "../components/nav/nav";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -41,6 +42,7 @@ export default function Home() {
         <meta name="description" content="Sveika pasaule" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <NavBar changePosts={setPosts} />
       <div className={styles.header}>
         <h1>Question feed</h1>
         <Button
