@@ -87,8 +87,8 @@ export default function NewQuestionForm(props: any) {
   function handleContentChange(e) {
     const textEntered = e.target.value;
     setContent(textEntered);
-    if (textEntered.length < 30) {
-      setConentError("Jautājuma aprakstam jabūt vismaz 30 burtu garam");
+    if (textEntered.length < 15) {
+      setConentError("Jautājuma aprakstam jabūt vismaz 15 burtu garam");
     } else {
       setConentError("");
     }
