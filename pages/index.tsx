@@ -53,12 +53,13 @@ export default function Home() {
       </div>
 
       <Stack direction="column" spacing={3}>
-        {posts.map((post, index) => {
+        {posts.map((post, index: number) => {
           // @ts-ignore
-          if (Math.floor(index / 5 + 1) == page)
+          if (Math.floor(index / 5 + 1) == page) {
             return (
               <Post key={index} data={post} onClick={setLoadingQuestion} />
             );
+          }
           return;
         })}
       </Stack>

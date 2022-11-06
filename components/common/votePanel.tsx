@@ -7,8 +7,9 @@ import Upvote from "./upvote";
 import Downvote from "./downvote";
 import Stack from "@mui/material/Stack";
 
-export default function VotePanel({ id, downvote, upvote, isQuestion = true }) {
-  const [state, setState] = useState("neutral");
+export default function VotePanel({ data }) {
+  const { id, upvote, downvote, isQuestion } = data;
+  const [state, setState] = useState("");
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
   const incrementProcedure = isQuestion ? "qincrement" : "aincrement";
@@ -17,28 +18,88 @@ export default function VotePanel({ id, downvote, upvote, isQuestion = true }) {
   if (state === "downvoted") voteOffset = -1;
   if (isQuestion) voteOffset = 0;
 
+  useEffect(() => {
+    console.log(currentUser);
+    if (!currentUser) {
+      setState("neutral");
+      return;
+    }
+    if (data.upvoters.includes(currentUser.email)) setState("upvoted");
+    else if (data.downvoters.includes(currentUser.email)) setState("downvoted");
+  }, [currentUser]);
+
   async function toggleState(element: string) {
     if (element === "downvote") {
       if (state === "downvoted") {
         setState("neutral");
-        supabase.rpc(incrementProcedure, { x: 1, row_id: id });
+        const promises = [
+          supabase.rpc(incrementProcedure, { x: 1, row_id: id }),
+          supabase.rpc("pop_array_downvoters", {
+            x: currentUser.email,
+            row_id: id,
+          }),
+        ];
+        await Promise.all(promises);
       } else if (state == "neutral") {
         setState("downvoted");
-        await supabase.rpc(incrementProcedure, { x: -1, row_id: id });
+        const promises = [
+          supabase.rpc(incrementProcedure, { x: -1, row_id: id }),
+          supabase.rpc("append_array_downvoters", {
+            x: currentUser.email,
+            row_id: id,
+          }),
+        ];
+        await Promise.all(promises);
       } else {
         setState("downvoted");
-        await supabase.rpc(incrementProcedure, { x: -2, row_id: id });
+        const promises = [
+          supabase.rpc(incrementProcedure, { x: -2, row_id: id }),
+          supabase.rpc("append_array_downvoters", {
+            x: currentUser.email,
+            row_id: id,
+          }),
+          supabase.rpc("pop_array_downvoters", {
+            x: currentUser.email,
+            row_id: id,
+          }),
+        ];
+        await Promise.all(promises);
       }
     } else {
       if (state === "downvoted") {
         setState("upvoted");
-        await supabase.rpc(incrementProcedure, { x: 2, row_id: id });
+        const promises = [
+          supabase.rpc(incrementProcedure, { x: 2, row_id: id }),
+          supabase.rpc("pop_array_downvoters", {
+            x: currentUser.email,
+            row_id: id,
+          }),
+          supabase.rpc("append_array_upvoters", {
+            x: currentUser.email,
+            row_id: id,
+          }),
+        ];
+        await Promise.all(promises);
       } else if (state == "neutral") {
         setState("upvoted");
-        await supabase.rpc(incrementProcedure, { x: 1, row_id: id });
+        const promises = [
+          supabase.rpc(incrementProcedure, { x: 1, row_id: id }),
+          supabase.rpc("append_array_upvoters", {
+            x: currentUser.email,
+            row_id: id,
+          }),
+        ];
+        await Promise.all(promises);
       } else {
         setState("neutral");
-        await supabase.rpc(incrementProcedure, { x: -1, row_id: id });
+        const promises = [
+          supabase.rpc(incrementProcedure, { x: -1, row_id: id }),
+          supabase.rpc("pop_array_upvoters", {
+            x: currentUser.email,
+            row_id: id,
+          }),
+        ];
+        await Promise.all(promises);
       }
     }
   }

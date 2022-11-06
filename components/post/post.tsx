@@ -15,7 +15,7 @@ export default function Post(params: any) {
   const data: PostData = params.data;
   return (
     <div className={styles.cardPost}>
-      <VotePanel id={data.id} downvote={data.downvote} upvote={data.upvote} />
+      <VotePanel data={data} />
       <div>
         <p className={`${styles.fontMedium} ${styles.colorAccent}`}>
           <Link
