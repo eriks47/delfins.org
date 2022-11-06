@@ -18,13 +18,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
 
 export default function NavBar() {
   const [alert, setAlert] = useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
 
@@ -41,7 +37,7 @@ export default function NavBar() {
   }
 
   const alertPopup = (
-    <Dialog open={alert} fullScreen={fullScreen}>
+    <Dialog open={alert}>
       <DialogTitle>{"Izrakstīties no konta?"}</DialogTitle>
       <DialogContent>
         <DialogContentText>
