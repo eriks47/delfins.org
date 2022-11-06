@@ -15,6 +15,13 @@ interface PostData {
 
 export default function Post(params: any) {
   const data: PostData = params.data;
+
+  async function add_view() {
+    const a = await supabase.rpc("add_view", { row_id: params.id });
+    params.onClick(true);
+    console.log(a);
+  }
+
   const rating = data.upvote - data.downvote;
   return (
     <div className={styles.cardPost}>
@@ -29,14 +36,7 @@ export default function Post(params: any) {
       </div>
       <div>
         <p className={`${styles.fontMedium} ${styles.colorAccent}`}>
-          <Link
-            onClick={async () => {
-              const a = await supabase.rpc("add_view", { row_id: params.id });
-              params.onClick(true);
-              console.log(a);
-            }}
-            href={`questions/${data.id}`}
-          >
+          <Link onClick={add_view} href={`questions/${data.id}`}>
             {data.title}
           </Link>
         </p>
