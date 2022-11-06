@@ -40,8 +40,11 @@ export default function Post(params: any) {
             {data.title}
           </Link>
         </p>
+        <p>
+          {data.content.slice(0, 300) +
+            (data.content.length > 300 ? "..." : "")}
+        </p>
         <p>{data.author}</p>
-        <p>{data.content.slice(0, 100) + "..."}</p>
       </div>
     </div>
   );

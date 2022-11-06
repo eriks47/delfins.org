@@ -43,7 +43,7 @@ export default function Home() {
   const pageBody = (
     <div style={{ padding: "0 2rem" }}>
       <div className={styles.header}>
-        <h1>Question feed</h1>
+        <h1>Jautājumi</h1>
         <Button
           onClick={() => router.push("/new-question")}
           variant="contained"
