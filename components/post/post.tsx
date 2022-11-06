@@ -7,10 +7,10 @@ interface PostData {
   author: string;
   title: string;
   content: string;
-  upvote: number;
-  downvote: number;
   answer_count: number;
   views: number;
+  downvoters: string[];
+  upvoters: string[];
 }
 
 export default function Post(params: any) {
@@ -22,7 +22,7 @@ export default function Post(params: any) {
     console.log(a);
   }
 
-  const rating = data.upvote - data.downvote;
+  const rating = data.upvoters.length - data.downvoters.length;
   return (
     <div className={styles.cardPost}>
       <div className={styles.numberPanel}>

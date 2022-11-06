@@ -121,7 +121,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Delfīns - Vieta Kur Skolēni Atbalsta, Mācās, Dalās</title>
+        <title>Delfīns - Katras Pa Zināšanu Lāsītei</title>
         <meta name="description" content="Sveika pasaule" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -129,15 +129,15 @@ export default function Home() {
         <AltNavBar changePosts={setPosts} />
 
         {loadingQuestion ? (
-          <>
+          <div style={{ padding: "0 2rem" }}>
             <LinearProgress />
             <Skeleton
               variant="text"
-              sx={{ fontSize: "2em", margin: "22px 0" }}
+              sx={{ fontSize: "32px", margin: "22px 0" }}
               width="500px"
             />
             <Skeleton variant="rounded" width={500} height={60} />
-          </>
+          </div>
         ) : (
           pageBody
         )}
