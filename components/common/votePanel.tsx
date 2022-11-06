@@ -8,9 +8,10 @@ import Downvote from "./downvote";
 import Stack from "@mui/material/Stack";
 
 export default function VotePanel({ data }) {
-  const { id, upvote, downvote, isQuestion } = data;
-  const [state, setState] = useState("");
+  const { id, isQuestion } = data;
+  const [state, setState] = useState("neutral");
   const [offset, setOffset] = useState(0);
+  const [offsetDefault, setOffsetDefault] = useState(0);
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
 
@@ -19,14 +20,16 @@ export default function VotePanel({ data }) {
   }, [data]);
 
   useEffect(() => {
-    if (!currentUser || !isQuestion) {
+    if (!currentUser) {
       setState("neutral");
       return;
     }
     if (data.upvoters.includes(currentUser.email)) {
       setState("upvoted");
+      setOffsetDefault(-1);
     } else if (data.downvoters.includes(currentUser.email)) {
       setState("downvoted");
+      setOffsetDefault(1);
     }
   }, [currentUser]);
 
@@ -37,31 +40,38 @@ export default function VotePanel({ data }) {
     });
   };
 
+  const rpc_pop_downvoters =
+    (!isQuestion ? "ans_" : "") + "pop_array_downvoters";
+  const rpc_append_downvoters =
+    (!isQuestion ? "ans_" : "") + "append_array_downvoters";
+  const rpc_pop_upvoters = (!isQuestion ? "ans_" : "") + "pop_array_upvoters";
+  const rpc_append_upvoters =
+    (!isQuestion ? "ans_" : "") + "append_array_upvoters";
   async function toggleState(element: string) {
     if (element === "downvoted") {
       if (state === "downvoted") {
         setState("neutral");
-        setOffset(0);
-        const promises = await supabase.rpc("pop_array_downvoters", {
+        setOffset(0 + offsetDefault);
+        const promises = await supabase.rpc(rpc_pop_downvoters, {
           x: currentUser.email,
           row_id: id,
         });
       } else if (state == "neutral") {
         setState("downvoted");
-        setOffset(-1);
-        const promises = await supabase.rpc("append_array_downvoters", {
+        setOffset(-1 + offsetDefault);
+        const promises = await supabase.rpc(rpc_append_downvoters, {
           x: currentUser.email,
           row_id: id,
         });
       } else {
         setState("downvoted");
-        setOffset(-1);
+        setOffset(-1 + offsetDefault);
         const promises = [
-          supabase.rpc("append_array_downvoters", {
+          supabase.rpc(rpc_append_downvoters, {
             x: currentUser.email,
             row_id: id,
           }),
-          supabase.rpc("pop_array_upvoters", {
+          supabase.rpc(rpc_pop_upvoters, {
             x: currentUser.email,
             row_id: id,
           }),
@@ -71,13 +81,13 @@ export default function VotePanel({ data }) {
     } else {
       if (state === "downvoted") {
         setState("upvoted");
-        setOffset(1);
+        setOffset(1 + offsetDefault);
         const promises = [
-          supabase.rpc("pop_array_downvoters", {
+          supabase.rpc(rpc_pop_downvoters, {
             x: currentUser.email,
             row_id: id,
           }),
-          supabase.rpc("append_array_upvoters", {
+          supabase.rpc(rpc_append_upvoters, {
             x: currentUser.email,
             row_id: id,
           }),
@@ -85,15 +95,15 @@ export default function VotePanel({ data }) {
         await Promise.all(promises);
       } else if (state == "neutral") {
         setState("upvoted");
-        setOffset(1);
-        const promises = await supabase.rpc("append_array_upvoters", {
+        setOffset(1 + offsetDefault);
+        const promises = await supabase.rpc(rpc_append_upvoters, {
           x: currentUser.email,
           row_id: id,
         });
       } else {
         setState("neutral");
-        setOffset(0);
-        const promises = await supabase.rpc("pop_array_upvoters", {
+        setOffset(0 + offsetDefault);
+        const promises = await supabase.rpc(rpc_pop_upvoters, {
           x: currentUser.email,
           row_id: id,
         });

@@ -17,7 +17,10 @@ export default function Post(params: any) {
   const data: PostData = params.data;
 
   async function add_view() {
-    const a = await supabase.rpc("add_view", { row_id: params.id });
+    const a = await supabase.rpc("questions_add_view", {
+      x: 1,
+      row_id: params.id,
+    });
     params.onClick(true);
     console.log(a);
   }
