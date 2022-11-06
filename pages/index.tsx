@@ -54,7 +54,7 @@ export default function Home() {
 
       <Stack direction="column" spacing={3}>
         {posts.map((post, index: number) => {
-          // @ts-ignore
+          post.isQuestion = true;
           if (Math.floor(index / 5 + 1) == page) {
             return (
               <Post key={index} data={post} onClick={setLoadingQuestion} />
