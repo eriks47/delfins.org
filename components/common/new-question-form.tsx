@@ -10,8 +10,12 @@ import { useRouter } from "next/router";
 export default function NewQuestionForm(props: any) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [tags, setTags] = useState("");
+
   const [titleError, setTilteError] = useState("");
   const [contentError, setConentError] = useState("");
+  const [tagsError, setTagsError] = useState("");
+
   const [error, setError] = useState("");
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
@@ -22,6 +26,7 @@ export default function NewQuestionForm(props: any) {
     if (
       titleError ||
       contentError ||
+      tagsError ||
       (props.isQuestion && !title) ||
       !content
     ) {
@@ -69,6 +74,16 @@ export default function NewQuestionForm(props: any) {
     }
   }
 
+  function handleTagsChange(e) {
+    const textEntered = e.target.value;
+    setTags(textEntered);
+    if (tags.split(" ")[0].length === 0) {
+      setTagsError("ERROR");
+    } else {
+      setTagsError("");
+    }
+  }
+
   function handleContentChange(e) {
     const textEntered = e.target.value;
     setContent(textEntered);
@@ -111,6 +126,20 @@ export default function NewQuestionForm(props: any) {
         onChange={handleContentChange}
         helperText={contentError || ""}
       />
+      {props.isQuestion && (
+        <TextField
+          style={{ marginTop: "15px" }}
+          error={!!tagsError}
+          value={tags}
+          onChange={handleTagsChange}
+          id="outlined-basic"
+          label="Marķējumi"
+          variant="outlined"
+          helperText={
+            "Atdalat marķējumus ar tukšuma zīmi, jāievada vismaz viens marķējums"
+          }
+        />
+      )}
       <Button
         style={{ marginTop: "15px", width: "100px" }}
         variant="contained"
