@@ -27,6 +27,13 @@ export default function VotePanel({ data }) {
     else if (data.downvoters.includes(currentUser.email)) setState("downvoted");
   }, [currentUser]);
 
+  const signInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: document.location.href },
+    });
+  };
+
   async function toggleState(element: string) {
     if (element === "downvote") {
       if (state === "downvoted") {
@@ -117,7 +124,7 @@ export default function VotePanel({ data }) {
     >
       <Upvote
         onClick={() =>
-          currentUser ? toggleState("upvote") : router.push("/login")
+          currentUser ? toggleState("upvote") : signInWithGoogle()
         }
         isActive={state === "upvoted"}
         isQuestion={isQuestion}
@@ -128,7 +135,7 @@ export default function VotePanel({ data }) {
       </p>
       <Downvote
         onClick={() =>
-          currentUser ? toggleState("downvote") : router.push("/login")
+          currentUser ? toggleState("downvote") : signInWithGoogle()
         }
         isActive={state == "downvoted"}
         isQuestion={isQuestion}
