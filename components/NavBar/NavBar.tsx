@@ -1,19 +1,30 @@
 import AppBar from "@mui/material/AppBar";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { DolphinContext } from "../../context/DolphinContext";
 import { supabase } from "../../services/supabaseClient";
 import Image from "next/image";
 
 import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 export default function NavBar() {
+  const [alert, setAlert] = useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
 
@@ -29,8 +40,34 @@ export default function NavBar() {
     router.push("/");
   }
 
+  const alertPopup = (
+    <Dialog open={alert} fullScreen={fullScreen}>
+      <DialogTitle>{"Izrakstīties no konta?"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Izrakstoties no konta jūs zaudēsiet iespēju iesaistīties jautājumos.
+          Tas nozīmē, ka jūs nevarēsiet uzdot jautājumus, atbildēt uz tiem un
+          izvērtēt tos.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setAlert(false)}>Atcelt</Button>
+        <Button
+          onClick={() => {
+            setAlert(false);
+            signOut();
+          }}
+          variant="contained"
+        >
+          Izrakstīties
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
   return (
     <div style={{ flex: 1 }}>
+      {alert && alertPopup}
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -66,7 +103,7 @@ export default function NavBar() {
                     size="large"
                     edge="start"
                     color="inherit"
-                    onClick={signOut}
+                    onClick={() => setAlert(true)}
                   >
                     <LogoutIcon />
                   </IconButton>
