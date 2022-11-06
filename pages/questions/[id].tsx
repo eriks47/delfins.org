@@ -75,38 +75,48 @@ export default function Question({
           setPreserve(true);
         }}
       />
-      <h1>{questionData.title}</h1>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <VotePanel data={questionData} />
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
-          <p>{questionData.author}</p>
-        </div>
-      </div>
-      <h1>Atbildes</h1>
-      <Stack direction="column" spacing={3}>
-        {answerHtml.map((html: string, index: number) => (
-          <div
-            key={index}
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <VotePanel data={answerData[index]} />
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div dangerouslySetInnerHTML={{ __html: html }} />
-              <p>{answerData[index].author}</p>
-            </div>
+      <div style={{ padding: "0px 2rem" }}>
+        <h1 style={{ fontWeight: "normal" }}>{questionData.title}</h1>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <VotePanel data={questionData} />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
+            <p>{questionData.author}</p>
           </div>
-        ))}
-        <NewQuestionForm isQuestion={false} questionId={questionData.id} />
-      </Stack>
+        </div>
+        <h1 style={{ fontWeight: "normal" }}>
+          {`${questionData.answer_count} ${
+            questionData.answer_count === 1 ? "Atblide" : "Atbildes"
+          }`}
+        </h1>
+        <Stack direction="column" spacing={3}>
+          {answerHtml.map((html: string, index: number) => (
+            <div
+              key={index}
+              style={{
+                border: "1px solid hsl(210, 8%, 90%)",
+                borderRadius: "6px",
+                padding: "16px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <VotePanel data={answerData[index]} />
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div dangerouslySetInnerHTML={{ __html: html }} />
+                <p>{answerData[index].author}</p>
+              </div>
+            </div>
+          ))}
+          <h1 style={{ fontWeight: "normal" }}>Tava atblide</h1>
+          <NewQuestionForm isQuestion={false} questionId={questionData.id} />
+        </Stack>
+      </div>
     </>
   );
 }

@@ -83,7 +83,7 @@ export default function NewQuestionForm(props: any) {
     <div
       style={{
         display: "flex",
-        padding: "20px",
+        padding: "20px 0",
         flexDirection: "column",
         width: "60%",
         minWidth: "300px",

@@ -1,6 +1,7 @@
 // Home Component - root component of the app
 
 import Head from "next/head";
+import Image from "next/image";
 import { useEffect, useState, useContext } from "react";
 import styles from "../styles/Home.module.css";
 import useSWR from "swr";
@@ -8,8 +9,8 @@ import Post from "../components/post/post";
 import { DolphinContext } from "../context/DolphinContext";
 import { PostsContext } from "../context/PostsContext";
 import { useRouter } from "next/router";
-import NavBar from "../components/nav/nav";
 import AltNavBar from "../components/NavBar/NavBar";
+import { supabase } from "../services/supabaseClient";
 
 import LinearProgress from "@mui/material/LinearProgress";
 import Skeleton from "@mui/material/Skeleton";
@@ -53,15 +54,51 @@ export default function Home() {
       </div>
 
       <Stack direction="column" spacing={3}>
-        {posts.map((post, index: number) => {
-          post.isQuestion = true;
-          if (Math.floor(index / 5 + 1) == page) {
-            return (
-              <Post key={index} data={post} onClick={setLoadingQuestion} />
-            );
-          }
-          return;
-        })}
+        {posts.length ? (
+          posts.map((post, index: number) => {
+            post.isQuestion = true;
+            if (Math.floor(index / 5 + 1) == page) {
+              return (
+                <Post key={index} data={post} onClick={setLoadingQuestion} />
+              );
+            }
+            return;
+          })
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <p>
+              Diemžēl mēs neatradām jūsu pieprasījumam atbilstošus jautājumus
+            </p>
+            <Image width="400" height="400" alt="Sad monster" src="/sad.png" />
+            <div style={{ display: "flex", gap: "20px" }}>
+              <Button
+                variant="outlined"
+                onClick={async () => {
+                  const res = await supabase
+                    .from("questions")
+                    .select("*")
+                    .order("created_at", { ascending: false });
+                  setPosts(res.data);
+                }}
+              >
+                Atgriezties
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => router.push("/new-question")}
+              >
+                Uzdot jautājumu
+              </Button>
+            </div>
+          </div>
+        )}
       </Stack>
       <div
         style={{
