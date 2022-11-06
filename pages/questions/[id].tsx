@@ -9,6 +9,7 @@ import NewQuestionForm from "../../components/common/new-question-form";
 import NavBar from "../../components/nav/nav";
 import { useContext } from "react";
 import { PostsContext } from "../../context/PostsContext";
+import AltNavBar from "../../components/NavBar/NavBar";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -67,7 +68,7 @@ export default function Question({
       <Head>
         <title>{questionData.title}</title>
       </Head>
-      <NavBar
+      <AltNavBar
         changePosts={(p) => {
           router.push("/");
           setPosts(p);

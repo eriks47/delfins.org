@@ -89,8 +89,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <>
-        <AltNavBar />
-        <NavBar changePosts={setPosts} />
+        <AltNavBar changePosts={setPosts} />
 
         {loadingQuestion ? (
           <>

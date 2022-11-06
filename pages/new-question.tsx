@@ -1,9 +1,9 @@
-import { PostsContext } from "../context/PostsContext";
-import NavBar from "../components/nav/nav";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import NewQuestionForm from "../components/common/new-question-form";
 import Head from "next/head";
+import { PostsContext } from "../context/PostsContext";
+import AltNavBar from "../components/NavBar/NavBar";
 
 export default function NewQuestion() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function NewQuestion() {
       <Head>
         <title>Uzdot Jautājumu - Delfīns</title>
       </Head>
-      <NavBar
+      <AltNavBar
         changePosts={(p) => {
           router.push("/");
           setPosts(p);

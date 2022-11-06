@@ -5,6 +5,7 @@ import { DolphinContext } from "../../context/DolphinContext";
 import { supabase } from "../../services/supabaseClient";
 import Image from "next/image";
 
+import { styled, alpha } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
@@ -18,11 +19,71 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
 
-export default function NavBar() {
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
+
+export default function NavBar({ changePosts }) {
   const [alert, setAlert] = useState(false);
+  const [search, setSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down(700));
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
+
+  async function fullTextSearch(query: string) {
+    const { data, error } = await supabase
+      .from("questions")
+      .select()
+      .textSearch("content", query);
+    changePosts(data);
+    if (error) {
+      console.log(error);
+    }
+  }
 
   const signInWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
@@ -35,6 +96,40 @@ export default function NavBar() {
     supabase.auth.signOut();
     router.push("/");
   }
+
+  const searchPopup = (
+    <Dialog open={search}>
+      <DialogTitle>{"Meklēt"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Ievadiet meklējamo vārdu vai vārdu savienojumu zemāk.
+        </DialogContentText>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Meklējums"
+          type="email"
+          fullWidth
+          variant="standard"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setSearch(false)}>Atcelt</Button>
+        <Button
+          onClick={() => {
+            setSearch(false);
+            fullTextSearch(`'${searchValue}'`);
+          }}
+          variant="contained"
+        >
+          Meklēt
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 
   const alertPopup = (
     <Dialog open={alert}>
@@ -64,6 +159,7 @@ export default function NavBar() {
   return (
     <div style={{ flex: 1 }}>
       {alert && alertPopup}
+      {search && searchPopup}
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -77,6 +173,29 @@ export default function NavBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Delfins.org
           </Typography>
+          {mobile ? (
+            <IconButton
+              style={{ color: "white" }}
+              onClick={() => setSearch(true)}
+            >
+              <SearchIcon color="inherit" />
+            </IconButton>
+          ) : (
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") fullTextSearch(`'${searchValue}'`);
+                }}
+                placeholder="Meklēt..."
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+          )}
           <div>
             {currentUser ? (
               <div

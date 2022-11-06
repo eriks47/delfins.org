@@ -40,18 +40,22 @@ export default function NewQuestionForm(props: any) {
         })
         .select();
     } else {
-      result = await supabase
-        .from("answers")
-        .insert({
-          content,
-          author: currentUser.user_metadata.full_name,
-          questionId: Number(props.questionId),
-        })
-        .select();
+      const res = [
+        supabase
+          .from("answers")
+          .insert({
+            content,
+            author: currentUser.user_metadata.full_name,
+            questionId: Number(props.questionId),
+          })
+          .select(),
+        supabase.rpc("add_answer", { row_id: props.questionId }),
+      ];
+      await Promise.all(res);
     }
     setContent("");
     setTitle("");
-    if (result.error) setError(result.error.message);
+    if (result && result.error) setError(result.error.message);
     else router.push(props.isQuestion ? "/" : `/questions/${props.questionId}`);
   }
 
