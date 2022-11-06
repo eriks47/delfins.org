@@ -121,7 +121,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Delfīns - Katras Pa Zināšanu Lāsītei</title>
+        <title>Delfīns - Katram Pa Zināšanu Lāsītei</title>
         <meta name="description" content="Sveika pasaule" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
