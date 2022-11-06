@@ -17,6 +17,13 @@ export default function NavBar() {
   const { currentUser } = useContext(DolphinContext);
   const router = useRouter();
 
+  const signInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin },
+    });
+  };
+
   function signOut() {
     supabase.auth.signOut();
     router.push("/");
@@ -71,7 +78,7 @@ export default function NavBar() {
                   size="large"
                   edge="start"
                   color="inherit"
-                  onClick={() => router.push("/login")}
+                  onClick={signInWithGoogle}
                 >
                   <LockOpenIcon />
                 </IconButton>
