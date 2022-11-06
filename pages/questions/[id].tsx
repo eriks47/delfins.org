@@ -59,6 +59,9 @@ export default function Question({
     useContext(PostsContext).value;
   const router = useRouter();
 
+  questionData.isQuestion = true;
+  answerData.map((answer) => ({ ...answer, isQuestion: false }));
+
   return (
     <>
       <Head>
@@ -78,12 +81,7 @@ export default function Question({
           alignItems: "center",
         }}
       >
-        <VotePanel
-          id={questionData.id}
-          upvote={questionData.upvote}
-          downvote={questionData.downvote}
-          isQuestion={true}
-        />
+        <VotePanel data={questionData} />
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
           <p>{questionData.author}</p>
@@ -99,12 +97,7 @@ export default function Question({
               alignItems: "center",
             }}
           >
-            <VotePanel
-              id={answerData[index].id}
-              upvote={answerData[index].upvote}
-              downvote={answerData[index].downvote}
-              isQuestion={false}
-            />
+            <VotePanel data={answerData[index]} />
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div dangerouslySetInnerHTML={{ __html: html }} />
               <p>{answerData[index].author}</p>

@@ -19,7 +19,6 @@ export default function VotePanel({ data }) {
   if (isQuestion) voteOffset = 0;
 
   useEffect(() => {
-    console.log(currentUser);
     if (!currentUser) {
       setState("neutral");
       return;
