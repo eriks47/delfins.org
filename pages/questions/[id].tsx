@@ -87,6 +87,25 @@ export default function Question({
           <VotePanel data={questionData} />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
+            {questionData.tags && (
+              <div style={{ display: "flex", gap: "4px", marginTop: "-5px" }}>
+                {questionData.tags.split(" ").map((tag) => {
+                  return (
+                    <p
+                      style={{
+                        padding: "4px 6px",
+                        fontSize: "12px",
+                        backgroundColor: "#e1ecf4",
+                        borderRadius: "3px",
+                        color: "#39739d",
+                      }}
+                    >
+                      {tag}
+                    </p>
+                  );
+                })}
+              </div>
+            )}
             {questionData.author_pfp && (
               <div
                 style={{

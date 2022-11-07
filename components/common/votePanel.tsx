@@ -119,7 +119,7 @@ export default function VotePanel({ data }) {
         width: "70px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         flexDirection: "column",
       }}
     >

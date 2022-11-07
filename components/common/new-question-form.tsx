@@ -43,6 +43,7 @@ export default function NewQuestionForm(props: any) {
           content,
           author: currentUser.user_metadata.full_name,
           author_pfp: currentUser.user_metadata.avatar_url,
+          tags: tags,
         })
         .select();
     } else {

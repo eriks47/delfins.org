@@ -11,6 +11,7 @@ interface PostData {
   answer_count: number;
   views: number;
   author_pfp: string;
+  tags: string;
   downvoters: string[];
   upvoters: string[];
 }
@@ -50,12 +51,30 @@ export default function Post(params: any) {
           {data.content.slice(0, 300) +
             (data.content.length > 300 ? "..." : "")}
         </p>
+        {data.tags && (
+          <div style={{ display: "flex", gap: "4px", marginTop: "-5px" }}>
+            {data.tags.split(" ").map((tag) => {
+              return (
+                <p
+                  style={{
+                    padding: "4px 6px",
+                    fontSize: "12px",
+                    backgroundColor: "#e1ecf4",
+                    borderRadius: "3px",
+                    color: "#39739d",
+                  }}
+                >
+                  {tag}
+                </p>
+              );
+            })}
+          </div>
+        )}
         {data.author_pfp && (
           <div
             style={{
               display: "flex",
               gap: "8px",
-              marginTop: "-10px",
               alignItems: "center",
             }}
           >
