@@ -19,10 +19,9 @@ export default function Post(params: any) {
   async function add_view() {
     const a = await supabase.rpc("questions_add_view", {
       x: 1,
-      row_id: params.id,
+      row_id: data.id,
     });
     params.onClick(true);
-    console.log(a);
   }
 
   const rating = data.upvoters.length - data.downvoters.length;
@@ -35,7 +34,9 @@ export default function Post(params: any) {
         <p className={styles.answers}>{`${data.answer_count} ${
           data.answer_count === 1 ? "atbilde" : "atbildes"
         }`}</p>
-        <p className={styles.views}>{data.views} skatījumi</p>
+        <p className={styles.views}>{`${data.views} ${
+          data.views === 1 ? "skatījums" : "skatījumi"
+        }`}</p>
       </div>
       <div>
         <p className={`${styles.fontMedium} ${styles.colorAccent}`}>
