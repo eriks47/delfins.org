@@ -11,7 +11,7 @@
 .numberPanel {
     flex-shrink: 0;
     margin-right: 16px;
-    width: 70px;
+    width: 80px;
     display: flex;
     gap: 15px;
     align-items: flex-end;
@@ -23,11 +23,26 @@
     margin: 0;
 }
 
-.answers {
+.answersZero {
+    color: #6a737c;
+}
+
+.answersSome {
     color: #2f6f44;
     border: 1px solid #2f6f44;
     padding: 2px 4px;
     border-radius: 3px;
+}
+
+.answersResolved {
+    background-color: #2f6f44;
+    color: white;
+    padding: 3px 5px;
+    border-radius: 3px;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .views {

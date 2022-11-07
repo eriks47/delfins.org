@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Post.module.css";
+import CheckIcon from "@mui/icons-material/Check";
 import { supabase } from "../../services/supabaseClient";
 
 interface PostData {
@@ -16,6 +17,31 @@ interface PostData {
   upvoters: string[];
 }
 
+function NumberPanel({ data }) {
+  const rating = data.upvoters.length - data.downvoters.length;
+  let answerStyles;
+  if (data.answer_count === 0) answerStyles = styles.answersZero;
+  else if (data.is_resolved) answerStyles = styles.answersResolved;
+  else answerStyles = styles.answersSome;
+
+  return (
+    <div className={styles.numberPanel}>
+      <p className={styles.rating}>{`${rating} ${
+        rating === 1 ? "balss" : "balsis"
+      }`}</p>
+      <p className={answerStyles}>
+        {data.is_resolved && <CheckIcon sx={{ fontSize: 14 }} />}
+        {`${data.answer_count} ${
+          data.answer_count === 1 ? "atbilde" : "atbildes"
+        }`}
+      </p>
+      <p className={styles.views}>{`${data.views} ${
+        data.views === 1 ? "skatījums" : "skatījumi"
+      }`}</p>
+    </div>
+  );
+}
+
 export default function Post(params: any) {
   const data: PostData = params.data;
 
@@ -27,20 +53,9 @@ export default function Post(params: any) {
     params.onClick(true);
   }
 
-  const rating = data.upvoters.length - data.downvoters.length;
   return (
     <div className={styles.cardPost}>
-      <div className={styles.numberPanel}>
-        <p className={styles.rating}>{`${rating} ${
-          rating === 1 ? "balss" : "balsis"
-        }`}</p>
-        <p className={styles.answers}>{`${data.answer_count} ${
-          data.answer_count === 1 ? "atbilde" : "atbildes"
-        }`}</p>
-        <p className={styles.views}>{`${data.views} ${
-          data.views === 1 ? "skatījums" : "skatījumi"
-        }`}</p>
-      </div>
+      <NumberPanel data={data} />
       <div>
         <p className={`${styles.fontMedium} ${styles.colorAccent}`}>
           <Link onClick={add_view} href={`questions/${data.id}`}>
