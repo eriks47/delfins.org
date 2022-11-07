@@ -1,5 +1,6 @@
 import VotePanel from "../../components/common/votePanel";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { remark } from "remark";
 import html from "remark-html";
@@ -86,7 +87,25 @@ export default function Question({
           <VotePanel data={questionData} />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
-            <p>{questionData.author}</p>
+            {questionData.author_pfp && (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  marginTop: "-10px",
+                  alignItems: "center",
+                }}
+              >
+                <Image
+                  style={{ borderRadius: "9999px" }}
+                  alt="Author picture"
+                  width="20"
+                  height="20"
+                  src={questionData.author_pfp}
+                ></Image>
+                <p style={{ color: "#3b4045" }}>{questionData.author}</p>
+              </div>
+            )}
           </div>
         </div>
         <h1 style={{ fontWeight: "normal" }}>
@@ -101,7 +120,7 @@ export default function Question({
               style={{
                 border: "1px solid hsl(210, 8%, 90%)",
                 borderRadius: "6px",
-                padding: "16px",
+                padding: "5px",
                 display: "flex",
                 alignItems: "center",
               }}
@@ -109,7 +128,27 @@ export default function Question({
               <VotePanel data={answerData[index]} />
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <div dangerouslySetInnerHTML={{ __html: html }} />
-                <p>{answerData[index].author}</p>
+                {answerData[index].author_pfp && (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      marginTop: "-10px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Image
+                      style={{ borderRadius: "9999px" }}
+                      alt="Author picture"
+                      width="20"
+                      height="20"
+                      src={answerData[index].author_pfp}
+                    ></Image>
+                    <p style={{ color: "#3b4045" }}>
+                      {answerData[index].author}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           ))}

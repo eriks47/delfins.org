@@ -42,6 +42,7 @@ export default function NewQuestionForm(props: any) {
           title,
           content,
           author: currentUser.user_metadata.full_name,
+          author_pfp: currentUser.user_metadata.avatar_url,
         })
         .select();
     } else {
@@ -52,6 +53,7 @@ export default function NewQuestionForm(props: any) {
             content,
             author: currentUser.user_metadata.full_name,
             questionId: Number(props.questionId),
+            author_pfp: currentUser.user_metadata.avatar_url,
           })
           .select(),
         supabase.rpc("add_answer", { row_id: props.questionId }),

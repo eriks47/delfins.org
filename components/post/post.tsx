@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./Post.module.css";
 import { supabase } from "../../services/supabaseClient";
 
@@ -9,6 +10,7 @@ interface PostData {
   content: string;
   answer_count: number;
   views: number;
+  author_pfp: string;
   downvoters: string[];
   upvoters: string[];
 }
@@ -48,7 +50,25 @@ export default function Post(params: any) {
           {data.content.slice(0, 300) +
             (data.content.length > 300 ? "..." : "")}
         </p>
-        <p>{data.author}</p>
+        {data.author_pfp && (
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              marginTop: "-10px",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              style={{ borderRadius: "9999px" }}
+              alt="Author picture"
+              width="20"
+              height="20"
+              src={data.author_pfp}
+            ></Image>
+            <p>{data.author}</p>
+          </div>
+        )}
       </div>
     </div>
   );

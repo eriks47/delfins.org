@@ -136,7 +136,19 @@ export default function Home() {
               sx={{ fontSize: "32px", margin: "22px 0" }}
               width="500px"
             />
-            <Skeleton variant="rounded" width={500} height={60} />
+            <Skeleton variant="rounded" width={900} height={128} />
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "32px", margin: "22px 0" }}
+              width="500px"
+            />
+            <Skeleton variant="rounded" width={900} height={128} />
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "32px", margin: "22px 0" }}
+              width="500px"
+            />
+            <Skeleton variant="rounded" width={900} height={128} />
           </div>
         ) : (
           pageBody
