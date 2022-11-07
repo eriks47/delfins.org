@@ -53,9 +53,10 @@ export default function Post(params: any) {
         </p>
         {data.tags && (
           <div style={{ display: "flex", gap: "4px", marginTop: "-5px" }}>
-            {data.tags.split(" ").map((tag) => {
+            {data.tags.split(" ").map((tag, index) => {
               return (
                 <p
+                  key={index}
                   style={{
                     padding: "4px 6px",
                     fontSize: "12px",

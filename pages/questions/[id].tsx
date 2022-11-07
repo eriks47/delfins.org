@@ -89,9 +89,10 @@ export default function Question({
             <div dangerouslySetInnerHTML={{ __html: questionHtml }} />
             {questionData.tags && (
               <div style={{ display: "flex", gap: "4px", marginTop: "-5px" }}>
-                {questionData.tags.split(" ").map((tag) => {
+                {questionData.tags.split(" ").map((tag, index) => {
                   return (
                     <p
+                      key={index}
                       style={{
                         padding: "4px 6px",
                         fontSize: "12px",
