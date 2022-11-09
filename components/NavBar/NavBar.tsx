@@ -75,14 +75,31 @@ export default function NavBar({ changePosts }) {
   const router = useRouter();
 
   async function fullTextSearch(query: string) {
-    const { data, error } = await supabase
+    const contentData = await supabase
       .from("questions")
       .select()
       .textSearch("content", query);
+    const titleData = await supabase
+      .from("questions")
+      .select()
+      .textSearch("title", query);
+    let aanswerData = await supabase
+      .from("answers")
+      .select()
+      .textSearch("content", query);
+    const answerData = await supabase
+      .from("questions")
+      .select("*")
+      .eq("id", aanswerData.data[0].questionId);
+    let ddata = contentData.data.concat(titleData.data, answerData.data);
+    let set = new Set();
+    let data = [];
+    ddata.forEach((post) => {
+      if (set.has(post.id)) return;
+      set.add(post.id);
+      data.push(post);
+    });
     changePosts(data);
-    if (error) {
-      console.log(error);
-    }
   }
 
   const signInWithGoogle = async () => {
@@ -121,7 +138,7 @@ export default function NavBar({ changePosts }) {
         <Button
           onClick={() => {
             setSearch(false);
-            fullTextSearch(`'${searchValue}'`);
+            if (searchValue) fullTextSearch(`'${searchValue}'`);
           }}
           variant="contained"
         >
@@ -189,7 +206,8 @@ export default function NavBar({ changePosts }) {
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") fullTextSearch(`'${searchValue}'`);
+                  if (e.key === "Enter" && searchValue)
+                    fullTextSearch(`'${searchValue}'`);
                 }}
                 placeholder="Meklēt..."
                 inputProps={{ "aria-label": "search" }}
