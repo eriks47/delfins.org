@@ -45,7 +45,11 @@ export async function getServerSideProps({ params }) {
     props: {
       questionData,
       questionHtml,
-      answerData: answerData.data,
+      answerData: answerData.data.sort((a, b): number => {
+        const aRating = a.upvoters.length - a.downvoters.length;
+        const bRating = b.upvoters.length - b.downvoters.length;
+        return aRating < bRating ? 1 : -1;
+      }),
       answerHtml,
     },
   };

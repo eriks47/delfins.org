@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { DolphinContext } from "../../context/DolphinContext";
 import { supabase } from "../../services/supabaseClient";
 import Image from "next/image";
+import logoPicture from "../../public/logo.png";
 
 import { styled, alpha } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
@@ -179,14 +180,25 @@ export default function NavBar({ changePosts }) {
       {search && searchPopup}
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            sx={{ margin: "0 12px" }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Image
+            style={{
+              margin: "0 12px",
+              borderRadius: "9999px",
+              cursor: "pointer",
+            }}
+            alt="Delfins logo"
+            src={logoPicture}
+            width="90"
+            height="40"
+            onClick={async () => {
+              const res = await supabase
+                .from("questions")
+                .select("*")
+                .order("created_at", { ascending: false });
+              changePosts(res.data);
+              router.push("/");
+            }}
+          />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Delfins.org
           </Typography>
