@@ -1,5 +1,7 @@
 # Delfins.org
 
+![](screenshot.png)
+
 [delfins.org](https://delfins.org)
 
 To run the project locally do the follwing
